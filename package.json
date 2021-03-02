@@ -1,8 +1,9 @@
 {
-    "name": "redux-broadcast-actions",
+    "name": "@getstation/redux-broadcast-actions",
     "version": "1.0.0",
     "description": "A tiny middleware for redux to share actions through BroadcastChannel API",
-    "main": "dist/index.js",
+    "main": "lib/broadcast-actions.js",
+    "types": "lib/broadcast-actions.d.ts",
     "scripts": {
         "test": "jest .",
         "build": "rimraf lib && tsc --outDir lib",

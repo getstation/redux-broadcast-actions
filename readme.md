@@ -8,9 +8,9 @@ Then you just need to plug all your pure reducers onto all your processes, and y
 
 Install with npm or yarn
 ```sh
-npm install --save redux-broadcast-actions
+npm install --save @getstation/redux-broadcast-actions
 # or
-yarn add redux-broadcast-actions
+yarn add @getstation/redux-broadcast-actions
 ```
 
 ### How to use
@@ -18,7 +18,7 @@ In all the processes where you need the actions to be dispatched and received, i
 
 ```ts
 import { createStore, applyMiddleware } from 'redux';
-import { createBroadcastActionsMiddleware } from 'redux-state-sync';
+import { createBroadcastActionsMiddleware } from '@getstation/redux-broadcast-actions';
 
 const config = {
   // name given to BroadcastChannel. Can also be a BroadcastChannel instance
