@@ -18,7 +18,7 @@ export const createBroadcastActionsMiddleware = (config = defaultConfig): Middle
     const channel = (typeof config.channel === 'object') ? config.channel : new BroadcastChannel(config.channel);
 
     return ({ dispatch }) => {
-        channel.onmessage = dispatch;
+        channel.onmessage = ({ data }) => dispatch(data);
         return next => action => {
             if (shouldForward(action)) {
                 channel.postMessage(action);
