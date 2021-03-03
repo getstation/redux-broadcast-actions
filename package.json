@@ -1,6 +1,6 @@
 {
     "name": "@getstation/redux-broadcast-actions",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A tiny middleware for redux to share actions through BroadcastChannel API",
     "main": "lib/broadcast-actions.js",
     "types": "lib/broadcast-actions.d.ts",
