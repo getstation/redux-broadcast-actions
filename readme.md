@@ -32,15 +32,18 @@ const store = createStore(rootReducer, {}, applyMiddleware(
 Then whenever you execute `store.dispatch(...)` in any process, all others are receiving the exact same action.
 
 #### Share initial state
-If one of your process acts as a "server" and other processes need to ask for its current state to be initialized:
+If one of your process acts as a source of truth (server) and other processes (clients) need to ask for its current state to be initialized:
 
 ##### Server
 ```ts
 import { createStore, applyMiddleware } from 'redux';
-import { createBroadcastActionsMiddleware, createSendInitialStateMiddleware } from '@getstation/redux-broadcast-actions';
+import {
+  createBroadcastActionsMiddleware,
+  createSendInitialStateMiddleware
+} from '@getstation/redux-broadcast-actions';
 
 const store = createStore(rootReducer, {}, applyMiddleware(
-  // this middleware listen for clients asking for initial state
+  // this middleware listens for clients asking for initial state
   createSendInitialStateMiddleware(),
   createBroadcastActionsMiddleware(),
 ));
