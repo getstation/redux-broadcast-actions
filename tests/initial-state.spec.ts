@@ -108,8 +108,20 @@ describe('initial-state', function () {
     // do not dispatch to all clients
     expect(channel.postMessage).toHaveBeenCalledTimes(0);
     // send only to asking client
-    expect(port).toHaveBeenCalledWith({
-      b: 2
+    expect(port).toHaveBeenCalledWith( {
+      type: 'redux_broadcast_actions/receive',
+      payload: {
+        b: 2
+      }
     });
+
+    channel.onmessage!({
+      data: {
+        type: 'redux_broadcast_actions/ask'
+      }
+    } as any);
+
+    // fallack to channel postMessage if no ports available
+    expect(channel.postMessage).toHaveBeenCalledTimes(1);
   });
 });

@@ -74,7 +74,15 @@ export const createSendInitialStateMiddleware = (config = defaultConfig): Middle
   return ({ getState }) => {
     channel.onmessage = ({ data, ports }) => {
       if (data && data.type === initActionAsk.type) {
-        ports[0].postMessage(getState());
+        const action = {
+          type: initActionReceive.type,
+          payload: getState()
+        }
+        if (ports && ports[0]) {
+          ports[0].postMessage(action);
+        } else {
+          channel.postMessage(action);
+        }
       }
     };
     return next => action => {
