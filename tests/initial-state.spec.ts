@@ -80,7 +80,10 @@ describe('initial-state', function () {
 
     channel.onmessage!({
       data: {
-        a: 1
+        type: 'redux_broadcast_actions/receive',
+        payload: {
+          a: 1
+        }
       }
     } as any);
 
@@ -91,12 +94,21 @@ describe('initial-state', function () {
 
   it('should send initial state when asked for', async function () {
     createStore(x => x!, { b: 2 }, applyMiddleware(createSendInitialStateMiddleware({ channel })));
+    const port = jest.fn();
 
     channel.onmessage!({
-      data: 'redux_broadcast_actions/init_state'
+      data: {
+        type: 'redux_broadcast_actions/ask'
+      },
+      ports: [{
+        postMessage: port
+      }]
     } as any);
 
-    expect(channel.postMessage).toHaveBeenCalledWith({
+    // do not dispatch to all clients
+    expect(channel.postMessage).toHaveBeenCalledTimes(0);
+    // send only to asking client
+    expect(port).toHaveBeenCalledWith({
       b: 2
     });
   });
