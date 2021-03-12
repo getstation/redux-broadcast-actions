@@ -1,5 +1,4 @@
 import { Store } from 'redux';
-import { BroadcastChannel as BroadcastChannelLib, clearNodeFolder } from 'broadcast-channel';
 import { createBroadcastActionsMiddleware } from '../src/broadcast-actions';
 
 describe('redux-broadcast-actions', function () {
@@ -8,20 +7,11 @@ describe('redux-broadcast-actions', function () {
   let dispatch: jest.Mock;
   let next: jest.Mock;
 
-  beforeAll(async () => {
-    await clearNodeFolder();
-  });
-
   beforeEach(() => {
-    channel = new BroadcastChannelLib('test') as unknown as BroadcastChannel;
-    channel.postMessage = jest.fn();
+    channel = { postMessage: jest.fn() } as any;
     middleware = createBroadcastActionsMiddleware({ channel });
     dispatch = jest.fn();
     next = jest.fn();
-  });
-
-  afterEach(() => {
-    channel.close()
   });
 
   it('should not forward actions marked as local', function () {

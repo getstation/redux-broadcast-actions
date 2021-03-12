@@ -20,15 +20,49 @@ In all the processes where you need the actions to be dispatched and received, i
 import { createStore, applyMiddleware } from 'redux';
 import { createBroadcastActionsMiddleware } from '@getstation/redux-broadcast-actions';
 
-const config = {
-  // name given to BroadcastChannel. Can also be a BroadcastChannel instance
-  channel: 'redux_broadcast_actions',
-};
-const middlewares = [createBroadcastActionsMiddleware(config)];
-const store = createStore(rootReducer, {}, applyMiddleware(...middlewares));
+const store = createStore(rootReducer, {}, applyMiddleware(
+  // broadcast actions to other processes
+  createBroadcastActionsMiddleware({
+    // name given to BroadcastChannel. Can also be a BroadcastChannel instance
+    channel: 'redux_broadcast_actions',
+  })
+));
 ```
 
 Then whenever you execute `store.dispatch(...)` in any process, all others are receiving the exact same action.
+
+#### Share initial state
+If one of your process acts as a "server" and other processes need to ask for its current state to be initialized:
+
+##### Server
+```ts
+import { createStore, applyMiddleware } from 'redux';
+import { createBroadcastActionsMiddleware, createSendInitialStateMiddleware } from '@getstation/redux-broadcast-actions';
+
+const store = createStore(rootReducer, {}, applyMiddleware(
+  // this middleware listen for clients asking for initial state
+  createSendInitialStateMiddleware(),
+  createBroadcastActionsMiddleware(),
+));
+```
+
+##### Client
+```ts
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import {
+  createBroadcastActionsMiddleware,
+  createGetInitialStateMiddleware,
+  initialStateReducer
+} from '@getstation/redux-broadcast-actions';
+
+// add initialStateReducer to the list of reducers
+const store = createStore(combineReducers(initialStateReducer, rootReducer), {}, applyMiddleware(
+  // ask server for initial state
+  // ⚠️ should be the first middleware
+  createGetInitialStateMiddleware(),
+  createBroadcastActionsMiddleware(),
+));
+```
 
 #### I do not want to broadcast one or more actions
 You can do that. First, by default some events of some libs are not broadcasted (redux-form, redux-persist, and some others, check `shouldForward` function for details).

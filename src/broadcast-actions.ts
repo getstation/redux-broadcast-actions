@@ -1,8 +1,5 @@
 import type { AnyAction, Middleware } from 'redux';
-
-export interface Config {
-    channel: string | BroadcastChannel;
-}
+import type { Config } from './types';
 
 const defaultConfig: Config = {
     channel: 'redux_broadcast_actions',

@@ -2,8 +2,8 @@
     "name": "@getstation/redux-broadcast-actions",
     "version": "1.0.2",
     "description": "A tiny middleware for redux to share actions through BroadcastChannel API",
-    "main": "lib/broadcast-actions.js",
-    "types": "lib/broadcast-actions.d.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "scripts": {
         "test": "jest .",
         "build": "rimraf lib && tsc --outDir lib",
@@ -33,7 +33,6 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.16.1",
         "@typescript-eslint/parser": "^4.16.1",
-        "broadcast-channel": "^3.4.1",
         "commitizen": "^2.8.6",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^7.21.0",
